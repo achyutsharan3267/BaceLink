@@ -7,4 +7,16 @@
 }
 body{
   padding: 20px;
+  background: rgb(39, 39, 39);
 }
+.card{
+  flex: 0 0 100%;
+  
+  }
+
+  @media(min-width:767px){
+    .card{
+      flex: 0 0 30%;
+      
+      }
+  }
