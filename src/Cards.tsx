@@ -7,7 +7,7 @@ function Cards() {
     <Card style={{ width: '18rem' }}>
       {
         group.map((item , index)=>(
-          <>
+          <div key={index}>
           <Card.Img variant="top" src={item.imageUrl} />
           <Card.Body>
             <Card.Title>{item.name}</Card.Title>
@@ -17,7 +17,7 @@ function Cards() {
             </Card.Text>
             <Button variant="primary" href={item.link}>join</Button>
           </Card.Body>
-          </>
+          </div>
         ))
       }
     
