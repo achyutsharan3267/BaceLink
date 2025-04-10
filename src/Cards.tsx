@@ -4,16 +4,15 @@
 
   function Cards() {
     return (
-      <div className='d-flex justify-content-around gap-3 flex-wrap'>
+      <div className='d-flex justify-content-between gap-3 flex-wrap'>
         {group.map((item, index) => (
           <Card key={index} style={{ display: "flex" }}>
             <Card.Img variant="top" src={item.imageUrl} />
             <Card.Body>
               <Card.Title>{item.name}</Card.Title>
-              <Card.Text>
-                {/* You can add a static description for now or update the data */}
+              {/* <Card.Text>
                 {item.description || 'No description available.'}
-              </Card.Text>
+              </Card.Text> */}
               <Button variant="primary" href={item.link}>Join</Button>
             </Card.Body>
           </Card>
