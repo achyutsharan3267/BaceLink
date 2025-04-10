@@ -11,19 +11,30 @@ body {
     
     width: 100vw; */
     height: 100vh;  
-  background: #000 url("https://myoksha.com/wp-content/uploads/2016/04/ISKCON-Temple-Delhi.jpg") center no-repeat;
-  background-size: cover;
+  background: #545454;
+  /* background-size: cover; */
 
+}
+
+.wrap{
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 20px;
 }
 .card{
   flex: 0 0 47%;
-  
+  overflow: hidden;
   }
   img.card-img-top {
     height: 190px;
     width: 100%;
     object-fit: cover;
     object-position: top;
+}
+@media(min-width:767px){
+  img.card-img-top {
+    height: 410px;
+}
 }
 .card {
   /* display: flex;

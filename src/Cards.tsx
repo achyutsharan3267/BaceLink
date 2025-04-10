@@ -4,7 +4,7 @@
 
   function Cards() {
     return (
-      <div className='d-flex justify-content-between gap-3 flex-wrap'>
+      <div className='d-flex justify-content-between gap-3 flex-wrap wrap'>
         {group.map((item, index) => (
           <Card key={index} style={{ display: "flex" }}>
             <Card.Img variant="top" src={item.imageUrl} />
