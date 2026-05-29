@@ -129,7 +129,7 @@ function isValidEmail(email: string) {
 
 function isAllowedAdminEmail(email: string) {
   if (allowedAdminEmails.length === 0) {
-    return true;
+    return false;
   }
 
   return allowedAdminEmails.includes(email.toLowerCase());
@@ -180,7 +180,7 @@ function AdminEmailGate({ onAccessGranted }: AdminEmailGateProps) {
         </p>
         <h1 className="mt-2 text-3xl font-black">Enter Your Email</h1>
         <p className="mt-3 text-sm leading-6 text-amber-50/66">
-          Only a valid admin email can open the content manager.
+          Only an approved admin email can open the content manager.
         </p>
 
         <label htmlFor="admin-email" className="mt-6 block">
@@ -219,8 +219,8 @@ function AdminEmailGate({ onAccessGranted }: AdminEmailGateProps) {
         </button>
 
         {allowedAdminEmails.length === 0 && (
-          <p className="mt-4 text-xs leading-5 text-amber-100/58">
-            Add VITE_ADMIN_EMAILS in .env to restrict access to specific emails.
+          <p className="mt-4 rounded-2xl border border-red-300/20 bg-red-500/10 px-4 py-3 text-xs font-bold leading-5 text-red-100">
+            Admin access is locked. Add VITE_ADMIN_EMAILS in environment variables and redeploy.
           </p>
         )}
       </form>
