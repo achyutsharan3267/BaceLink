@@ -40,6 +40,7 @@ const navItems = [
   { label: "Events", href: "/events" },
   { label: "Quotes", href: "#quotes" },
   { label: "Social", href: "#social" },
+  { label: "Quiz", href: "/quiz" },
 ];
 
 const eventIconMap = {
