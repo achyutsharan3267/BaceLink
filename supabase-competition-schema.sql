@@ -16,6 +16,7 @@ create table if not exists public.quizzes (
   description text not null default '',
   status text not null default 'draft' check (status in ('draft', 'waiting', 'active', 'paused', 'ended')),
   timer_per_question integer not null default 10,
+  is_live boolean not null default false,
   active_question_id uuid,
   current_question_index integer not null default 0,
   started_at timestamptz,
@@ -24,6 +25,9 @@ create table if not exists public.quizzes (
   created_at timestamptz not null default now(),
   updated_at timestamptz not null default now()
 );
+
+alter table public.quizzes
+add column if not exists is_live boolean not null default false;
 
 create table if not exists public.questions (
   id uuid primary key default gen_random_uuid(),

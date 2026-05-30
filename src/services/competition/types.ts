@@ -15,6 +15,7 @@ export type CompetitionQuiz = {
   description: string;
   status: CompetitionStatus;
   timerPerQuestion: number;
+  isLive: boolean;
   activeQuestionId: string | null;
   currentQuestionIndex: number;
   startedAt: string | null;

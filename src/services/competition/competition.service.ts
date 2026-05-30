@@ -17,6 +17,7 @@ type QuizRow = {
   description: string;
   status: CompetitionQuiz["status"];
   timer_per_question: number;
+  is_live?: boolean;
   active_question_id: string | null;
   current_question_index: number;
   started_at: string | null;
@@ -87,6 +88,7 @@ function toQuiz(row: QuizRow): CompetitionQuiz {
     description: row.description,
     status: row.status,
     timerPerQuestion: row.timer_per_question,
+    isLive: row.is_live ?? false,
     activeQuestionId: row.active_question_id,
     currentQuestionIndex: row.current_question_index,
     startedAt: row.started_at,
@@ -194,7 +196,7 @@ export async function getLatestQuiz() {
   const client = requireSupabase();
   const { data, error } = await client
     .from("quizzes")
-    .select("id,title,description,status,timer_per_question,active_question_id,current_question_index,started_at,question_started_at")
+    .select("id,title,description,status,timer_per_question,is_live,active_question_id,current_question_index,started_at,question_started_at")
     .order("created_at", { ascending: false })
     .limit(1)
     .maybeSingle();
@@ -202,11 +204,25 @@ export async function getLatestQuiz() {
   return data ? toQuiz(data as QuizRow) : null;
 }
 
+export async function getActiveQuiz() {
+  const client = requireSupabase();
+  const { data, error } = await client
+    .from("quizzes")
+    .select("id,title,description,status,timer_per_question,is_live,active_question_id,current_question_index,started_at,question_started_at")
+    .eq("is_live", true)
+    .order("updated_at", { ascending: false })
+    .limit(1)
+    .maybeSingle();
+  if (error) throw error;
+  if (data) return toQuiz(data as QuizRow);
+  return getLatestQuiz();
+}
+
 export async function getQuizById(quizId: string) {
   const client = requireSupabase();
   const { data, error } = await client
     .from("quizzes")
-    .select("id,title,description,status,timer_per_question,active_question_id,current_question_index,started_at,question_started_at")
+    .select("id,title,description,status,timer_per_question,is_live,active_question_id,current_question_index,started_at,question_started_at")
     .eq("id", quizId)
     .maybeSingle();
   if (error) throw error;
@@ -217,7 +233,7 @@ export async function getQuizzes() {
   const client = requireSupabase();
   const { data, error } = await client
     .from("quizzes")
-    .select("id,title,description,status,timer_per_question,active_question_id,current_question_index,started_at,question_started_at")
+    .select("id,title,description,status,timer_per_question,is_live,active_question_id,current_question_index,started_at,question_started_at")
     .order("created_at", { ascending: false });
   if (error) throw error;
   return (data ?? []).map((row) => toQuiz(row as QuizRow));
@@ -235,10 +251,19 @@ export async function createQuiz(title: string, description: string, timerPerQue
       status: "draft",
       created_by: user.user?.id ?? null,
     })
-    .select("id,title,description,status,timer_per_question,active_question_id,current_question_index,started_at,question_started_at")
+    .select("id,title,description,status,timer_per_question,is_live,active_question_id,current_question_index,started_at,question_started_at")
     .single();
   if (error) throw error;
   return toQuiz(data as QuizRow);
+}
+
+export async function makeQuizLive(quizId: string) {
+  const client = requireSupabase();
+  const { error: clearError } = await client.from("quizzes").update({ is_live: false });
+  if (clearError) throw clearError;
+
+  const { error } = await client.from("quizzes").update({ is_live: true }).eq("id", quizId);
+  if (error) throw error;
 }
 
 export async function createQuestionWithOptions(

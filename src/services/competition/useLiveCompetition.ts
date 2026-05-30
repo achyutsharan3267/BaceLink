@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
 import {
   getLeaderboard,
+  getActiveQuiz,
   getLatestQuiz,
   getQuizById,
   getMyParticipant,
@@ -36,7 +37,7 @@ export function useLiveCompetition(quizId?: string, includeCorrectAnswers = fals
   const load = useCallback(async () => {
     setIsLoading(true);
     try {
-      const nextQuiz = quizId ? await getQuizById(quizId) : await getLatestQuiz();
+      const nextQuiz = quizId ? await getQuizById(quizId) : await getActiveQuiz();
       setQuiz(nextQuiz);
 
       if (!nextQuiz) {
